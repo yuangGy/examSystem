@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="com.gy.model.Answer">
+    <id column="answer_id" jdbcType="INTEGER" property="answerId" />
+    <result column="answer_flag" jdbcType="VARCHAR" property="answerFlag" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    answer_id, answer_flag, question_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from exam_answer
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam_answer
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gy.model.Answer">
+    insert into exam_answer (answer_id, answer_flag, question_id
+      )
+    values (#{answerId,jdbcType=INTEGER}, #{answerFlag,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gy.model.Answer">
+    insert into exam_answer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="answerId != null">
+        answer_id,
+      </if>
+      <if test="answerFlag != null">
+        answer_flag,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="answerId != null">
+        #{answerId,jdbcType=INTEGER},
+      </if>
+      <if test="answerFlag != null">
+        #{answerFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gy.model.Answer">
+    update exam_answer
+    <set>
+      <if test="answerFlag != null">
+        answer_flag = #{answerFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gy.model.Answer">
+    update exam_answer
+    set answer_flag = #{answerFlag,jdbcType=VARCHAR},
+      question_id = #{questionId,jdbcType=INTEGER}
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteAllAnswerByQuestionId" parameterType="java.lang.Integer">
+    delete from exam_answer
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </delete>
+</mapper>

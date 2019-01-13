@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.gy.model.SysUser">
+    <id column="sys_user_id" jdbcType="INTEGER" property="sysUserId" />
+    <result column="sys_user_name" jdbcType="VARCHAR" property="sysUserName" />
+    <result column="sys_user_password" jdbcType="VARCHAR" property="sysUserPassword" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sys_user_id, sys_user_name, sys_user_password
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where sys_user_id = #{sysUserId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_user
+    where sys_user_id = #{sysUserId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gy.model.SysUser">
+    insert into sys_user (sys_user_id, sys_user_name, sys_user_password
+      )
+    values (#{sysUserId,jdbcType=INTEGER}, #{sysUserName,jdbcType=VARCHAR}, #{sysUserPassword,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gy.model.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sysUserId != null">
+        sys_user_id,
+      </if>
+      <if test="sysUserName != null">
+        sys_user_name,
+      </if>
+      <if test="sysUserPassword != null">
+        sys_user_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sysUserId != null">
+        #{sysUserId,jdbcType=INTEGER},
+      </if>
+      <if test="sysUserName != null">
+        #{sysUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserPassword != null">
+        #{sysUserPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gy.model.SysUser">
+    update sys_user
+    <set>
+      <if test="sysUserName != null">
+        sys_user_name = #{sysUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="sysUserPassword != null">
+        sys_user_password = #{sysUserPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sys_user_id = #{sysUserId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gy.model.SysUser">
+    update sys_user
+    set sys_user_name = #{sysUserName,jdbcType=VARCHAR},
+      sys_user_password = #{sysUserPassword,jdbcType=VARCHAR}
+    where sys_user_id = #{sysUserId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findByNameAndPwd"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where sys_user_name = #{sysUserName,jdbcType=VARCHAR} and sys_user_password = #{sysUserPassword,jdbcType=VARCHAR}
+  </select>
+</mapper>

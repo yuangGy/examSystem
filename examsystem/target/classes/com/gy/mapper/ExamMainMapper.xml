@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.ExamMainMapper">
+	<select id="findAllSimpleSucjects" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_name questionName,
+		exam_question.question_score questionScore,
+		CONCAT(exam_options.options_flag,'.',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag answersFlag
+		FROM
+		teacher_exam
+		INNER JOIN exam_question ON teacher_exam.question_id =
+		exam_question.question_id
+		INNER JOIN exam_options ON teacher_exam.question_id =
+		exam_options.question_id
+		INNER JOIN exam_answer ON teacher_exam.question_id =
+		exam_answer.question_id
+		WHERE teacher_exam.question_type=0 AND teacher_exam.type=1 ORDER BY `options`
+	</select>
+
+	<select id="sysFindAllSimpleSucjects" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_score
+		questionScore,
+		exam_question.question_name AS questionName,
+		CONCAT(exam_options.options_flag,'.',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag AS answersFlag
+		FROM
+		exam_question
+		INNER JOIN exam_options ON exam_options.question_id =
+		exam_question.question_id
+		INNER JOIN exam_answer ON
+		exam_answer.question_id =
+		exam_question.question_id
+		WHERE
+		exam_question.questuon_type=0
+		ORDER BY `options`
+	</select>
+
+	<select id="sysFindSimpleSucject" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_score
+		questionScore,
+		exam_question.question_name AS questionName,
+		CONCAT(exam_options.options_flag,'~~',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag AS answersFlag
+		FROM
+		exam_question
+		INNER JOIN exam_options ON exam_options.question_id =
+		exam_question.question_id
+		INNER JOIN exam_answer ON
+		exam_answer.question_id =
+		exam_question.question_id
+		WHERE
+		exam_question.question_id = #{questionId}
+		ORDER BY `options`
+	</select>
+
+	<select id="sysFindAllSimpleSucjectsRand" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_score
+		questionScore,
+		exam_question.question_name AS questionName,
+		CONCAT(exam_options.options_flag,'~~',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag AS answersFlag
+		FROM
+		(SELECT * FROM
+		exam_question WHERE exam_question.questuon_type=0 ORDER BY RAND())
+		exam_question
+		INNER JOIN exam_options ON exam_options.question_id =
+		exam_question.question_id
+		INNER JOIN exam_answer ON
+		exam_answer.question_id =
+		exam_question.question_id
+		WHERE
+		exam_question.question_id = #{questionId}
+		ORDER BY `options`
+	</select>
+
+	<select id="findAllManySucjects" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_name questionName,
+		exam_question.question_score questionScore,
+		CONCAT(exam_options.options_flag,'.',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag answersFlag
+		FROM
+		teacher_exam
+		INNER JOIN exam_question ON teacher_exam.question_id =
+		exam_question.question_id
+		INNER JOIN exam_options ON teacher_exam.question_id =
+		exam_options.question_id
+		INNER JOIN exam_answer ON teacher_exam.question_id =
+		exam_answer.question_id
+		WHERE teacher_exam.question_type=1 AND teacher_exam.type=1 ORDER BY `options`
+
+	</select>
+
+	<select id="sysFindAllManySucjects" resultMap="SubjectMap">
+		SELECT
+		exam_question.question_id questionId,
+		exam_question.question_score
+		questionScore,
+		exam_question.question_name AS questionName,
+		CONCAT(exam_options.options_flag,'.',exam_options.options_desc) AS
+		`options`,
+		exam_answer.answer_flag AS answersFlag
+		FROM
+		exam_question
+		INNER JOIN exam_options ON exam_options.question_id =
+		exam_question.question_id
+		INNER JOIN exam_answer ON
+		exam_answer.question_id =
+		exam_question.question_id
+		WHERE
+		exam_question.questuon_type=1
+		ORDER BY `options`
+
+	</select>
+
+	<resultMap type="com.gy.model.Subject" id="SubjectMap">
+		<result column="questionId" property="questionId" />
+		<result column="questionScore" property="questionScore" />
+		<result column="questionName" property="questionName" />
+		<collection property="options" ofType="java.lang.String">
+			<result property="options" column="options" />
+		</collection>
+		<collection property="answersFlag"
+			ofType="java.lang.String">
+			<result property="answersFlag" column="answersFlag" />
+		</collection>
+	</resultMap>
+</mapper>

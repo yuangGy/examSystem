@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.OptionsMapper">
+  <resultMap id="BaseResultMap" type="com.gy.model.Options">
+    <id column="options_id" jdbcType="INTEGER" property="optionsId" />
+    <result column="options_desc" jdbcType="VARCHAR" property="optionsDesc" />
+    <result column="options_flag" jdbcType="VARCHAR" property="optionsFlag" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    options_id, options_desc, options_flag, question_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from exam_options
+    where options_id = #{optionsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam_options
+    where options_id = #{optionsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gy.model.Options">
+    insert into exam_options (options_id, options_desc, options_flag, 
+      question_id)
+    values (#{optionsId,jdbcType=INTEGER}, #{optionsDesc,jdbcType=VARCHAR}, #{optionsFlag,jdbcType=VARCHAR}, 
+      #{questionId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gy.model.Options">
+    insert into exam_options
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="optionsId != null">
+        options_id,
+      </if>
+      <if test="optionsDesc != null">
+        options_desc,
+      </if>
+      <if test="optionsFlag != null">
+        options_flag,
+      </if>
+      <if test="questionId != null">
+        question_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="optionsId != null">
+        #{optionsId,jdbcType=INTEGER},
+      </if>
+      <if test="optionsDesc != null">
+        #{optionsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="optionsFlag != null">
+        #{optionsFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        #{questionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gy.model.Options">
+    update exam_options
+    <set>
+      <if test="optionsDesc != null">
+        options_desc = #{optionsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="optionsFlag != null">
+        options_flag = #{optionsFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionId != null">
+        question_id = #{questionId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where options_id = #{optionsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gy.model.Options">
+    update exam_options
+    set options_desc = #{optionsDesc,jdbcType=VARCHAR},
+      options_flag = #{optionsFlag,jdbcType=VARCHAR},
+      question_id = #{questionId,jdbcType=INTEGER}
+    where options_id = #{optionsId,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteAllOptionsByQuestionId" parameterType="java.lang.Integer">
+    delete from exam_options
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </delete>
+</mapper>
